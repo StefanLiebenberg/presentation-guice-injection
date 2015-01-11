@@ -3,6 +3,7 @@ package example;
 
 import com.google.inject.Inject;
 
+
 public class ClockBuilder {
 
     private final IdGenerator idGenerator;
@@ -32,6 +33,4 @@ public class ClockBuilder {
         this.hour = hour;
         return this;
     }
-
-
 }

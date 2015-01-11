@@ -8,6 +8,7 @@ import com.google.inject.Singleton;
 import java.util.Date;
 
 @Singleton
+@SuppressWarnings("deprecation")
 public class ClockConverter {
 
     private final Provider<ClockBuilder> clockBuilderProvider;
@@ -18,7 +19,11 @@ public class ClockConverter {
     }
 
     public ClockModel create(Date date) {
-        return clockBuilderProvider.get().setHours(date.getHours()).setMinutes(date.getMinutes()).setSeconds(date.getSeconds()).build();
+        ClockBuilder builder = clockBuilderProvider.get();
+        builder.setHours(date.getHours());
+        builder.setMinutes(date.getMinutes());
+        builder.setSeconds(date.getSeconds());
+        return builder.build();
     }
 
 }

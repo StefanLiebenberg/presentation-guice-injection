@@ -3,8 +3,7 @@ package example;
 import com.google.common.base.Preconditions;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Key;
-import com.google.inject.name.Names;
+import com.google.inject.ProvidedBy;
 import example.configuration.TopModule;
 import spark.Request;
 import spark.Response;
@@ -13,14 +12,15 @@ import spark.Route;
 import static spark.Spark.get;
 
 
-public class ClockApplication {
+@ProvidedBy(ApplicationProvider.class)
+public class Application {
 
     private final ApplicationFactory applicationFactory;
 
     private final GreeterHtmlRenderer greeterHtmlRenderer;
 
     @Inject
-    public ClockApplication(ApplicationFactory applicationFactory, GreeterHtmlRenderer greeterHtmlRenderer) {
+    public Application(ApplicationFactory applicationFactory, GreeterHtmlRenderer greeterHtmlRenderer) {
         this.applicationFactory = applicationFactory;
         this.greeterHtmlRenderer = greeterHtmlRenderer;
     }
@@ -49,9 +49,6 @@ public class ClockApplication {
 
 
     public static void main(String[] args) {
-//        Guice.createInjector(new TopModule()).getInstance(ClockApplication.class).initialize();
-
-
-        Guice.createInjector(new TopModule()).getInstance(Key.get(ClockApplication.class, Names.named("Initialized")));
+        Guice.createInjector(new TopModule());
     }
 }
