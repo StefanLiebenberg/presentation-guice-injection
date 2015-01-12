@@ -12,7 +12,6 @@ import java.util.Date;
 
 public class DateModule extends AbstractModule {
 
-
     @Override
     protected void configure() {
     }

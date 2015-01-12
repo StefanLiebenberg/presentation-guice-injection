@@ -1,10 +1,8 @@
 package example;
 
 import com.google.common.base.Preconditions;
-import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.ProvidedBy;
-import example.configuration.TopModule;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -34,21 +32,26 @@ public class Application {
         get("/html/:name", new Route() {
             @Override
             public Object handle(Request request, Response response) throws Exception {
-                return greeterHtmlRenderer.render(applicationFactory.createGreeter(request.params("name")).get());
+                return getHtml(request.params("name"));
             }
         });
-
+        
         get("/json/:name", "application/json", new Route() {
             @Override
             public Object handle(Request request, Response response) throws Exception {
                 response.type("application/json");
-                return applicationFactory.createGreeter(request.params("name")).get();
+                return getModel(request.params("name"));
             }
+
         }, new JsonTransformer());
     }
 
-
-    public static void main(String[] args) {
-        Guice.createInjector(new TopModule());
+    private GreeterModel getModel(String name) {
+        return applicationFactory.createGreeter(name).get();
     }
+
+    private String getHtml(String name) {
+        return greeterHtmlRenderer.render(getModel(name));
+    }
+
 }
